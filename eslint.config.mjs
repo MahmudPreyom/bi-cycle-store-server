@@ -13,9 +13,8 @@ export default [
     rules: {
       'no-unused-vars': 'error',
       'no-undef': 'error',
-      'no-unused-expression': 'error',
       'prefer-const': 'error',
-      'no-consol': 'warn',
+      'no-console': 'warn',
     },
   },
 ];

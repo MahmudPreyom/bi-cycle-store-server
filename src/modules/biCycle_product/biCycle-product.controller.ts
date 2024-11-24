@@ -11,11 +11,11 @@ const createBiCycle = async (req: Request, res: Response) => {
       message: 'Bicycle created successfully',
       data: result,
     });
-  } catch (err: any) {
+  } catch (error) {
     res.status(500).json({
       success: false,
-      message: err.message || 'Something Went to wrong',
-      error: err,
+      message: 'Something Went to wrong',
+      error: error,
     });
   }
 };
