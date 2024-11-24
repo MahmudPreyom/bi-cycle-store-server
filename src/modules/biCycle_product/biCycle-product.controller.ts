@@ -99,7 +99,11 @@ const queryBiCycleProduct = async (req: Request, res: Response) => {
     const query = req.query;
     console.log(query);
     const result = await BiCycle.find(query);
-    res.status(200).json({ data: result });
+    res.status(200).json({
+      message: 'Bicycle retrieved successfully',
+      status: true,
+      data: result,
+    });
   } catch (err) {
     console.log(err);
   }
