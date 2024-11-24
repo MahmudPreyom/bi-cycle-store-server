@@ -7,8 +7,8 @@ const createBiCycle = async (req: Request, res: Response) => {
     const data = req.body;
     const result = await biCycleProductService.createBiCycleProduct(data);
     res.json({
-      success: true,
       message: 'Bicycle created successfully',
+      success: true,
       data: result,
     });
   } catch (error) {
@@ -25,8 +25,8 @@ const getBiCycle = async (req: Request, res: Response) => {
     const result = await biCycleProductService.getBiCycle();
 
     res.send({
-      status: true,
       message: 'Bicycles retrieved successfully',
+      status: true,
       result,
     });
   } catch (error) {
@@ -43,8 +43,8 @@ const getSingleBiCycle = async (req: Request, res: Response) => {
     const biCycleId = req.params.productId;
     const result = await biCycleProductService.getSingleBiCycle(biCycleId);
     res.send({
-      status: true,
       message: 'Bicycle retrieved successfully',
+      status: true,
       result,
     });
   } catch (error) {
@@ -62,8 +62,8 @@ const updateBiCycle = async (req: Request, res: Response) => {
     const body = req.body;
     const result = await biCycleProductService.updateBiCycle(biCycleId, body);
     res.send({
-      status: true,
       message: 'Bicycle updated successfully',
+      status: true,
       result,
     });
   } catch (error) {
@@ -81,8 +81,8 @@ const deleteBiCycle = async (req: Request, res: Response) => {
     await biCycleProductService.deleteBiCycle(biCycleId);
 
     res.send({
-      status: true,
       message: 'Bicycle deleted successfully',
+      status: true,
       result: {},
     });
   } catch (error) {

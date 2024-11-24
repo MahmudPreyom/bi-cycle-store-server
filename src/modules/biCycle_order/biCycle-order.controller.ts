@@ -6,7 +6,7 @@ const createOrderBiCycle = async (req: Request, res: Response) => {
     const data = req.body;
     const result = await orderBiCycleService.createOrderBiCycleService(data);
     res.json({
-      message: 'Bi Cycle order created successfully',
+      message: 'Order created successfully',
       success: true,
       data: result,
     });
