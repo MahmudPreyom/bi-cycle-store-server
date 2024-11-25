@@ -19,6 +19,25 @@ const createOrderBiCycle = async (req: Request, res: Response) => {
   }
 };
 
+const getBiCycleOrderController = async (req: Request, res: Response) => {
+  try {
+    const result = await orderBiCycleService.getBiCycleOrder();
+
+    res.send({
+      message: 'Order Bicycles retrieved successfully',
+      status: true,
+      result,
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: 'Something went wrong',
+      error,
+    });
+  }
+};
+
 export const orderBiCycleController = {
   createOrderBiCycle,
+  getBiCycleOrderController,
 };

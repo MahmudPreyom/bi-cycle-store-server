@@ -4,5 +4,6 @@ import { orderBiCycleController } from './biCycle-order.controller';
 const orderBiCycleRouter = Router();
 
 orderBiCycleRouter.post('/', orderBiCycleController.createOrderBiCycle);
+orderBiCycleRouter.get('/', orderBiCycleController.getBiCycleOrderController);
 
 export default orderBiCycleRouter;

@@ -97,15 +97,18 @@ const deleteBiCycle = async (req: Request, res: Response) => {
 const queryBiCycleProduct = async (req: Request, res: Response) => {
   try {
     const query = req.query;
-    console.log(query);
     const result = await BiCycle.find(query);
     res.status(200).json({
       message: 'Bicycle retrieved successfully',
       status: true,
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    res.json({
+      status: false,
+      message: 'Something went wrong',
+      error,
+    });
   }
 };
 

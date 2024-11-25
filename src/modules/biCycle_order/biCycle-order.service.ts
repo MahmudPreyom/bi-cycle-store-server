@@ -8,6 +8,12 @@ const createOrderBiCycleService = async (
   return result;
 };
 
+const getBiCycleOrder = async () => {
+  const result = await OrderBiCycleModel.find();
+  return result;
+};
+
 export const orderBiCycleService = {
   createOrderBiCycleService,
+  getBiCycleOrder,
 };
