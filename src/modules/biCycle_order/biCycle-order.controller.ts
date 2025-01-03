@@ -24,7 +24,7 @@ const getBiCycleOrderController = async (req: Request, res: Response) => {
     const result = await orderBiCycleService.getBiCycleOrder();
 
     res.send({
-      message: 'Order Bicycles retrieved successfully',
+      message: 'Revenue calculated successfully',
       status: true,
       data: result,
     });
