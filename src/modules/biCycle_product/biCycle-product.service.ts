@@ -6,8 +6,16 @@ const createBiCycleProduct = async (data: TBiCycle): Promise<TBiCycle> => {
   return result;
 };
 
-const getBiCycle = async () => {
-  const result = await BiCycle.find();
+const getBiCycle = async (searchTerm: string | undefined) => {
+  let query = {};
+
+  if (searchTerm) {
+    const regex = new RegExp(searchTerm, 'i');
+    query = {
+      $or: [{ name: regex }, { brand: regex }, { type: regex }],
+    };
+  }
+  const result = await BiCycle.find(query);
   return result;
 };
 

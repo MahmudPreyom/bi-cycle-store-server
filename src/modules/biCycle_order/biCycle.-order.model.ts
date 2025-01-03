@@ -19,6 +19,6 @@ const OrderBiCycleSchema: Schema = new mongoose.Schema(
   },
 );
 
-const OrderBiCycleModel = model<TOrderBiCycle>('order', OrderBiCycleSchema);
+const OrderBiCycleModel = model<TOrderBiCycle>('Order', OrderBiCycleSchema);
 
 export default OrderBiCycleModel;

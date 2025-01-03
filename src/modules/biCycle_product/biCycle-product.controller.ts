@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { biCycleProductService } from '../biCycle_product/biCycle-product.service';
-import BiCycle from './biCycle-product.model';
+// import BiCycle from './biCycle-product.model';
 
 const createBiCycle = async (req: Request, res: Response) => {
   try {
@@ -22,12 +22,14 @@ const createBiCycle = async (req: Request, res: Response) => {
 
 const getBiCycle = async (req: Request, res: Response) => {
   try {
-    const result = await biCycleProductService.getBiCycle();
+    const { searchTerm } = req.query;
+    const result = await biCycleProductService.getBiCycle(searchTerm as string);
+    // console.log(searchTerm);
 
     res.send({
       message: 'Bicycles retrieved successfully',
       status: true,
-      result,
+      data: result,
     });
   } catch (error) {
     res.json({
@@ -45,7 +47,7 @@ const getSingleBiCycle = async (req: Request, res: Response) => {
     res.send({
       message: 'Bicycle retrieved successfully',
       status: true,
-      result,
+      data: result,
     });
   } catch (error) {
     res.json({
@@ -64,7 +66,7 @@ const updateBiCycle = async (req: Request, res: Response) => {
     res.send({
       message: 'Bicycle updated successfully',
       status: true,
-      result,
+      data: result,
     });
   } catch (error) {
     res.json({
@@ -83,25 +85,7 @@ const deleteBiCycle = async (req: Request, res: Response) => {
     res.send({
       message: 'Bicycle deleted successfully',
       status: true,
-      result: {},
-    });
-  } catch (error) {
-    res.json({
-      status: false,
-      message: 'Something went wrong',
-      error,
-    });
-  }
-};
-
-const queryBiCycleProduct = async (req: Request, res: Response) => {
-  try {
-    const query = req.query;
-    const result = await BiCycle.find(query);
-    res.status(200).json({
-      message: 'Bicycle retrieved successfully',
-      status: true,
-      data: result,
+      data: {},
     });
   } catch (error) {
     res.json({
@@ -118,5 +102,4 @@ export const cycleController = {
   getSingleBiCycle,
   updateBiCycle,
   deleteBiCycle,
-  queryBiCycleProduct,
 };

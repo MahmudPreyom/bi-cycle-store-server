@@ -13,7 +13,7 @@ const createOrderBiCycle = async (req: Request, res: Response) => {
   } catch (error) {
     res.json({
       status: false,
-      message: 'Something went wrong',
+      message: 'Insufficient stock for the requested product',
       error,
     });
   }
@@ -26,7 +26,7 @@ const getBiCycleOrderController = async (req: Request, res: Response) => {
     res.send({
       message: 'Order Bicycles retrieved successfully',
       status: true,
-      result,
+      data: result,
     });
   } catch (error) {
     res.json({
