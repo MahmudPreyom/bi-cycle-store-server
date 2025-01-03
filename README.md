@@ -67,31 +67,35 @@ Finally we can add scripts for prettier as well in the package.json file.
 
 ## post method to create link
 
-http://localhost:5000/api/products/biCycle-create
+https://bi-cycle-store-lemon.vercel.app/api/products
 
 ## get method to get all Bi Cycle link
 
-http://localhost:5000/api/products
+https://bi-cycle-store-lemon.vercel.app/api/products
 
 ## get method to get single data by using id link
 
-http://localhost:5000/api/products/6743327fab5aa926ef88a9ea
+https://bi-cycle-store-lemon.vercel.app/api/products6743327fab5aa926ef88a9ea
 
 ## get method query by using name, brand, type
 
-http://localhost:5000/api/products?name=Roadster 5000
+https://bi-cycle-store-lemon.vercel.app/api/products?searchTerm=test
 
 ## put method using for update
 
-http://localhost:5000/api/products/6743327fab5aa926ef88a9ea
+https://bi-cycle-store-lemon.vercel.app/api/products/6743327fab5aa926ef88a9ea
 
 ## delete method to delete BiCycle product
 
-http://localhost:5000/api/products/6743327fab5aa926ef88a9ea
+https://bi-cycle-store-lemon.vercel.app/api/products6743327fab5aa926ef88a9ea
 
 ## order create by using post
 
-http://localhost:5000/api/orders
+https://bi-cycle-store-lemon.vercel.app/api/orders
+
+## order revenue get method
+
+https://bi-cycle-store-lemon.vercel.app/api/orders/revenue
 
 ## vercel set up by installing vercel cli and add vercel.json file add
 
