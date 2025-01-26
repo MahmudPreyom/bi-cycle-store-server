@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { cycleController } from './biCycle-product.controller';
 
-const biCycleRouter = Router();
+const BiCycleRouter = Router();
 
 // biCycleRouter.post('/biCycle-create', cycleController.createBiCycle);
-biCycleRouter.post('/', cycleController.createBiCycle);
-biCycleRouter.get('/:productId', cycleController.getSingleBiCycle);
-biCycleRouter.put('/:productId', cycleController.updateBiCycle);
-biCycleRouter.delete('/:productId', cycleController.deleteBiCycle);
-biCycleRouter.get('/', cycleController.getBiCycle);
+BiCycleRouter.post('/', cycleController.createBiCycle);
+BiCycleRouter.get('/:productId', cycleController.getSingleBiCycle);
+BiCycleRouter.put('/:productId', cycleController.updateBiCycle);
+BiCycleRouter.delete('/:productId', cycleController.deleteBiCycle);
+BiCycleRouter.get('/', cycleController.getBiCycle);
 
-export default biCycleRouter;
+export default BiCycleRouter;

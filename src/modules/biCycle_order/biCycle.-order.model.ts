@@ -1,10 +1,11 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { TOrderBiCycle } from './biCycle-order.interface';
 
-const OrderBiCycleSchema: Schema = new mongoose.Schema(
+const OrderBiCycleSchema = new Schema<TOrderBiCycle>(
   {
-    email: { type: String, required: true, unique: true },
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'BiCycle' },
+    email: { type: String, required: false },
+    customer: { type: Schema.Types.ObjectId, ref: 'User' },
+    product: { type: Schema.Types.ObjectId, unique: false, ref: 'BiCycle' },
     quantity: {
       type: Number,
       required: true,
@@ -19,6 +20,9 @@ const OrderBiCycleSchema: Schema = new mongoose.Schema(
   },
 );
 
-const OrderBiCycleModel = model<TOrderBiCycle>('Order', OrderBiCycleSchema);
+export const OrderBiCycleModel = model<TOrderBiCycle>(
+  'Order',
+  OrderBiCycleSchema,
+);
 
-export default OrderBiCycleModel;
+// export default OrderBiCycleModel;

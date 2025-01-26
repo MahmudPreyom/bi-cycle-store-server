@@ -1,12 +1,18 @@
 import { Router } from 'express';
 import { orderBiCycleController } from './biCycle-order.controller';
+import auth from '../../middlewares/auth';
 
-const orderBiCycleRouter = Router();
+const OrderBiCycleRouter = Router();
 
-orderBiCycleRouter.post('/', orderBiCycleController.createOrderBiCycle);
-orderBiCycleRouter.get(
+OrderBiCycleRouter.post(
+  '/',
+  auth('customer'),
+  orderBiCycleController.createOrderBiCycle,
+);
+OrderBiCycleRouter.get(
   '/revenue',
+  auth('admin'),
   orderBiCycleController.getBiCycleOrderController,
 );
 
-export default orderBiCycleRouter;
+export default OrderBiCycleRouter;
