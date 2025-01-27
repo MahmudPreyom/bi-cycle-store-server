@@ -5,6 +5,7 @@ const BiCycleSchema: Schema = new Schema<TBiCycle>(
   {
     name: { type: String, required: [true, 'Name is required.'] },
     brand: { type: String, required: [true, 'Brand is required.'] },
+    // image: { type: String, required: [true, 'Brand is required.'] },
     price: { type: Number, required: [true, 'Price is required.'] },
     type: {
       type: String,

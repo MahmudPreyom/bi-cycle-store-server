@@ -5,6 +5,7 @@ import OrderBiCycleRouter from './modules/biCycle_order/biCycle-order.routes';
 import UserRoutes from './modules/users/user.routes';
 import authRoutes from './modules/auth/auth.routes';
 import globalErrorHandler from './middlewares/globalErrorHandler';
+// import PaymentRouter from './modules/payment/payment.route';
 const app: Application = express();
 
 app.use(express.json());
@@ -14,6 +15,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', BiCycleRouter);
 app.use('/api/orders', OrderBiCycleRouter);
 app.use('/api/user', UserRoutes);
+// app.use('/api/payment', PaymentRouter);
+// app.use('/api/payment', PaymentRouter);
 
 app.use(globalErrorHandler);
 

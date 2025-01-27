@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from 'express';
 import { orderBiCycleService } from './biCycle-order.service';
 import AppError from '../../app/errors/AppError';
@@ -24,33 +26,63 @@ const createOrderBiCycle = catchAsync(async (req, res) => {
     statusCode: StatusCodes.CREATED,
     success: true,
     message: 'Order created successfully',
-    data: {
-      price: result.totalPrice,
-      product: result.product,
-      quantity: result?.quantity,
-      customer: result?.customer,
-    },
+    data: result,
   });
-  // try {
-  //   const data = req.body;
-  //   // const userId = req.user?._id;
-  //   const result = await orderBiCycleService.createOrderBiCycleService(
-  //     data,
-  //     // userId,
-  //   );
-  //   res.json({
-  //     message: 'Order created successfully',
-  //     success: true,
-  //     data: result,
-  //     // userEmail: userId.email,
-  //   });
-  // } catch (error) {
-  //   res.json({
-  //     status: false,
-  //     message: 'Insufficient stock for the requested product',
-  //     error,
-  //   });
-  // }
+});
+
+const getBiCycleOrderData = catchAsync(async (req, res) => {
+  const biCycleOrderId = req.params.orderId;
+  const result =
+    await orderBiCycleService.getSingleBiCycleOrderFromDB(biCycleOrderId);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Order Retrieved successfully',
+    data: result,
+  });
+});
+
+const updateBiCycleOrder = catchAsync(async (req, res) => {
+  const { orderId } = req.params;
+  const userId = req.user?._id;
+  const result = await orderBiCycleService.updateBiCycleOderIntoDB(
+    orderId,
+    userId,
+    req.body,
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Update Order bicycle successfully',
+    data: result,
+  });
+});
+
+const deleteOrder = catchAsync(async (req, res) => {
+  const { orderId } = req.params;
+  const userId = req.user?._id;
+
+  const result = await orderBiCycleService.deleteOrderFromDB(orderId, userId);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Order deleted successfully',
+  });
+});
+
+const adminShippingOrder = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await orderBiCycleService.adminShippingOrder(id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Order Shipping successfully',
+    data: result,
+  });
 });
 
 const getBiCycleOrderController = async (req: Request, res: Response) => {
@@ -74,4 +106,8 @@ const getBiCycleOrderController = async (req: Request, res: Response) => {
 export const orderBiCycleController = {
   createOrderBiCycle,
   getBiCycleOrderController,
+  getBiCycleOrderData,
+  updateBiCycleOrder,
+  adminShippingOrder,
+  deleteOrder,
 };

@@ -14,6 +14,11 @@ const OrderBiCycleSchema = new Schema<TOrderBiCycle>(
       type: Number,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ['Pending', 'Shipping'],
+      default: 'Pending',
+    },
   },
   {
     timestamps: true,

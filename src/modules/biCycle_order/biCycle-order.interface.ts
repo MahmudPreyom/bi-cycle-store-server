@@ -6,5 +6,6 @@ export type TOrderBiCycle = {
   product: Types.ObjectId;
   quantity: number;
   totalPrice: number;
+  status?: 'Pending' | 'Shipping';
   // orderStatus: ''
 };

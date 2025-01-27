@@ -14,9 +14,11 @@ const createOrderBiCycleService = async (
 ) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+
   try {
     // Validate user existence
     const user = await User.findById(userId).session(session);
+
     if (!user) {
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
     }
@@ -36,6 +38,9 @@ const createOrderBiCycleService = async (
         'Insufficient stock or product not found.',
       );
     }
+
+    // Calculate total price
+    data.totalPrice = bicycle.price * quantity;
 
     // Reduce quantity and update inStock status
     bicycle.quantity -= quantity;
@@ -66,6 +71,77 @@ const createOrderBiCycleService = async (
       'Something went to wrong',
     );
   }
+};
+
+const getSingleBiCycleOrderFromDB = async (id: string) => {
+  const result = await OrderBiCycleModel.findById(id);
+  return result;
+};
+
+const updateBiCycleOderIntoDB = async (
+  id: string,
+  userId: string,
+  payload: Partial<TOrderBiCycle>,
+) => {
+  const order = await OrderBiCycleModel.findById(id);
+
+  if (!order) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Order not found');
+  }
+
+  if (order.customer.toString() !== userId) {
+    throw new AppError(
+      StatusCodes.FORBIDDEN,
+      'You are not authorized to update this order',
+    );
+  }
+
+  const result = await OrderBiCycleModel.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  return result;
+};
+
+const deleteOrderFromDB = async (id: string, userId: string) => {
+  const deleteOrderId = await OrderBiCycleModel.findById(id);
+  if (!deleteOrderId) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Order not found');
+  }
+
+  if (deleteOrderId?.customer.toString() !== userId) {
+    throw new AppError(
+      StatusCodes.FORBIDDEN,
+      'You are not authorized to delete this blog',
+    );
+  }
+
+  const result = await OrderBiCycleModel.findByIdAndDelete(id);
+  return result;
+};
+
+const adminShippingOrder = async (id: string) => {
+  // Find the user id
+  const orderBiCycle = await OrderBiCycleModel.findById(id);
+  // Check if the user exists
+  if (!orderBiCycle) {
+    throw new Error('Order  not found');
+  }
+
+  // Check if the user is already blocked
+  if (orderBiCycle.status === 'Shipping') {
+    throw new Error('Order is already Shipping ! ');
+  }
+  const result = await OrderBiCycleModel.findByIdAndUpdate(
+    id,
+    { status: 'Shipping' },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+  return result;
 };
 
 const getBiCycleOrder = async (): Promise<{ totalRevenue: number }> => {
@@ -104,4 +180,8 @@ const getBiCycleOrder = async (): Promise<{ totalRevenue: number }> => {
 export const orderBiCycleService = {
   createOrderBiCycleService,
   getBiCycleOrder,
+  getSingleBiCycleOrderFromDB,
+  updateBiCycleOderIntoDB,
+  deleteOrderFromDB,
+  adminShippingOrder,
 };
