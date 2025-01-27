@@ -29,7 +29,19 @@ const updateUserValidationSchema = z.object({
       .optional(),
   }),
 });
+
+const changePasswordValidationSchema = z.object({
+  body: z.object({
+    currentPassword: z.string({
+      required_error: 'Current password is required',
+    }),
+    newPassword: z
+      .string({ required_error: 'New password is required' })
+      .min(6, 'Password must be at least 6 characters long'),
+  }),
+});
 export const UserValidation = {
   userValidationSchema,
   updateUserValidationSchema,
+  changePasswordValidationSchema,
 };

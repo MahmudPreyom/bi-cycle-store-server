@@ -19,6 +19,13 @@ UserRoutes.patch(
   UserControllers.updateUserActiveStatus,
 );
 
+UserRoutes.patch(
+  '/change-password',
+  auth(USER_ROLE.user),
+  validateRequest(UserValidation.changePasswordValidationSchema),
+  UserControllers.changePassword,
+);
+
 UserRoutes.get(
   '/',
   auth(USER_ROLE.admin, USER_ROLE.user),

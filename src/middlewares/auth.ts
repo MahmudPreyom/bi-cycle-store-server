@@ -19,7 +19,7 @@ const auth = (...requiredRole: string[]) => {
       config.jwt_access_secret as string,
     ) as JwtPayload;
 
-    const { email, role } = decoded;
+    const { _id, email, role } = decoded;
 
     const user = await User.findOne({ email });
 
@@ -38,6 +38,7 @@ const auth = (...requiredRole: string[]) => {
     }
 
     req.user = decoded as JwtPayload;
+    req.user._id = _id;
 
     next();
   });

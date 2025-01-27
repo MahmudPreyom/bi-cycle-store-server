@@ -18,6 +18,23 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+const changePassword = catchAsync(async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.user?._id; // Retrieved from authenticated token
+
+  const result = await UserService.changePassword(
+    userId,
+    currentPassword,
+    newPassword,
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: result.message,
+  });
+});
+
 const getUser = catchAsync(async (req, res) => {
   const result = await UserService.getUserFromDB();
 
@@ -41,6 +58,7 @@ const updateUserActiveStatus = catchAsync(async (req, res) => {
 
 export const UserControllers = {
   createUser,
+  changePassword,
   getUser,
   updateUserActiveStatus,
 };
