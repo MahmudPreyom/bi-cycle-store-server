@@ -31,8 +31,6 @@ const createOrderBiCycle = catchAsync(async (req, res) => {
 });
 
 const getBiCycleOrderData = catchAsync(async (req, res) => {
-  console.log(req.cookies);
-
   const biCycleOrderId = req.params.orderId;
   const userId = req.user?._id;
   const result = await orderBiCycleService.getSingleBiCycleOrderFromDB(
