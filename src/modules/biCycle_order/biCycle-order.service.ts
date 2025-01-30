@@ -73,9 +73,21 @@ const createOrderBiCycleService = async (
   }
 };
 
-const getSingleBiCycleOrderFromDB = async (id: string) => {
-  const result = await OrderBiCycleModel.findById(id);
-  return result;
+const getSingleBiCycleOrderFromDB = async (id: string, userId: string) => {
+  const bicycleOrderId = await OrderBiCycleModel.findById(id);
+
+  if (!bicycleOrderId) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Order not found');
+  }
+
+  if (bicycleOrderId.customer.toString() !== userId) {
+    throw new AppError(
+      StatusCodes.FORBIDDEN,
+      'You are not authorized to see this order',
+    );
+  }
+
+  return bicycleOrderId;
 };
 
 const updateBiCycleOderIntoDB = async (

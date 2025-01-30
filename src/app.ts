@@ -5,11 +5,13 @@ import OrderBiCycleRouter from './modules/biCycle_order/biCycle-order.routes';
 import UserRoutes from './modules/users/user.routes';
 import authRoutes from './modules/auth/auth.routes';
 import globalErrorHandler from './middlewares/globalErrorHandler';
+import cookieParser from 'cookie-parser';
 // import PaymentRouter from './modules/payment/payment.route';
 const app: Application = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ origin: ['http://localhost:5173'] }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', BiCycleRouter);

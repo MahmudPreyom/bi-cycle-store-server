@@ -18,6 +18,12 @@ authRoutes.post(
   AuthControllers.login,
 );
 
+authRoutes.post(
+  '/refresh-token',
+  validateRequest(AuthValidation.refreshTokenValidationSchema),
+  AuthControllers.refreshToken,
+);
+
 // authRoutes.post('/logout', AuthControllers.logout);
 
 export default authRoutes;

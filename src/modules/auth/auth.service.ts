@@ -3,10 +3,10 @@ import { StatusCodes } from 'http-status-codes';
 import config from '../../app/config';
 import AppError from '../../app/errors/AppError';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { TUser } from '../users/user.interface';
 import { User } from '../users/user.model';
-import { TLoginUser } from './auth.inteface';
+import { TLoginUser } from './auth.interface';
 
 const register = async (payload: TUser) => {
   const result = await User.create(payload);
@@ -44,13 +44,60 @@ const login = async (payload: TLoginUser) => {
       role: user.role,
     },
     config.jwt_access_secret as string,
-    { expiresIn: '40d' },
+    { expiresIn: '15d' },
+  );
+
+  const refreshToken = jwt.sign(
+    {
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+    },
+    config.jwt_refresh_secret as string,
+    { expiresIn: '365d' },
   );
 
   //   eslint-disable-next-line no-unused-vars
   const { password, ...remainingData } = user;
 
-  return { token, remainingData };
+  return { token, refreshToken, remainingData };
+};
+
+const refreshToken = async (token: string) => {
+  const decoded = jwt.verify(
+    token,
+    config.jwt_refresh_secret as string,
+  ) as JwtPayload;
+
+  const { email } = decoded;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+
+  const isActiveStatus = user?.isActivate;
+
+  if (isActiveStatus === false) {
+    throw new AppError(StatusCodes.FORBIDDEN, 'This user is deactivated !!');
+  }
+
+  // if (requiredRole && !requiredRole.includes(role)) {
+  //   throw new AppError(StatusCodes.FORBIDDEN, 'You are not authorized');
+  // }
+
+  const accessToken = jwt.sign(
+    {
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+    },
+    config.jwt_access_secret as string,
+    { expiresIn: '15d' },
+  );
+
+  return { accessToken };
 };
 
 // const logout = async () => {
@@ -60,5 +107,6 @@ const login = async (payload: TLoginUser) => {
 export const AuthServices = {
   register,
   login,
+  refreshToken,
   // logout,
 };
