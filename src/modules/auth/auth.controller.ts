@@ -29,7 +29,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
     statusCode: StatusCodes.OK,
     success: true,
     message: 'Login successful',
-    data: { token: result?.token },
+    data: { accessToken: result?.accessToken },
   });
 });
 

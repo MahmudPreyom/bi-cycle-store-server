@@ -37,7 +37,7 @@ const login = async (payload: TLoginUser) => {
     throw new AppError(StatusCodes.UNAUTHORIZED, 'Password can not match!');
   }
 
-  const token = jwt.sign(
+  const accessToken = jwt.sign(
     {
       _id: user._id,
       email: user.email,
@@ -60,7 +60,7 @@ const login = async (payload: TLoginUser) => {
   //   eslint-disable-next-line no-unused-vars
   const { password, ...remainingData } = user;
 
-  return { token, refreshToken, remainingData };
+  return { accessToken, refreshToken, remainingData };
 };
 
 const refreshToken = async (token: string) => {
