@@ -21,7 +21,7 @@ const BiCycleSchema: Schema = new Schema<TBiCycle>(
       type: Number,
       required: [true, 'Quantity is required.'],
     },
-    inStock: { type: Boolean, required: [true, 'InStock status is required.'] },
+    inStock: { type: Boolean, default: true },
   },
   {
     timestamps: true,

@@ -17,7 +17,7 @@ export const createBiCycleProductValidationSchema = z.object({
       .number({ required_error: 'Quantity is required.' })
       .int('Quantity must be an integer.')
       .nonnegative('Quantity must be a non-negative number.'),
-    inStock: z.boolean({ required_error: 'InStock status is required.' }),
+    inStock: z.boolean().default(true),
   }),
 });
 
