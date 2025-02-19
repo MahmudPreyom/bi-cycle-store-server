@@ -42,8 +42,8 @@ const getBiCycle = async (req: Request, res: Response) => {
 
 const getSingleBiCycle = async (req: Request, res: Response) => {
   try {
-    const biCycleId = req.params.productId;
-    const result = await biCycleProductService.getSingleBiCycle(biCycleId);
+    const id = req.params.id;
+    const result = await biCycleProductService.getSingleBiCycle(id);
     res.send({
       message: 'Bicycle retrieved successfully',
       status: true,

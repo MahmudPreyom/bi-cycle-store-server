@@ -16,7 +16,7 @@ BiCycleRouter.post(
   ),
   cycleController.createBiCycle,
 );
-BiCycleRouter.get('/:productId', cycleController.getSingleBiCycle);
+BiCycleRouter.get('/:id', cycleController.getSingleBiCycle);
 BiCycleRouter.patch(
   '/:productId',
   auth(USER_ROLE.admin),
