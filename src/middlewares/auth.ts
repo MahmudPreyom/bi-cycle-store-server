@@ -41,7 +41,7 @@ const auth = (...requiredRole: string[]) => {
     }
 
     req.user = decoded as JwtPayload;
-    req.user = user;
+    // req.user = user;
     req.user._id = _id;
 
     next();
