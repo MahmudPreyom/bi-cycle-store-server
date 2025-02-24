@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { orderBiCycleService } from './biCycle-order.service';
 import AppError from '../../app/errors/AppError';
 import { StatusCodes } from 'http-status-codes';
@@ -105,6 +105,42 @@ const getBiCycleOrderController = async (req: Request, res: Response) => {
     });
   }
 };
+// ==========================================================demo===============================================
+const getUserOrders = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?._id;
+  const result = await orderBiCycleService.getAllOrdersByUser(userId);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Orders retrieved successfully',
+    data: result,
+  });
+});
+
+// const getBiCycleOrderbyUser = async (req: Request, res: Response) => {
+//   try {
+//     const userId = req.params.userId; // Get userId from URL parameter
+
+//     if (!userId) {
+//       return res
+//         .status(StatusCodes.BAD_REQUEST)
+//         .json({ message: 'User ID is required' });
+//     }
+
+//     const result = await orderBiCycleService.getBiCycleOrderbyuser(userId); // Pass userId to service
+
+//     res.send({
+//       message: 'Orders fetched successfully', // Improved message
+//       status: true,
+//       data: result,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// ==========================================================demo===============================================
 
 export const orderBiCycleController = {
   createOrderBiCycle,
@@ -113,4 +149,5 @@ export const orderBiCycleController = {
   updateBiCycleOrder,
   adminShippingOrder,
   deleteOrder,
+  getUserOrders,
 };

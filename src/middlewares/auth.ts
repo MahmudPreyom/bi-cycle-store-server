@@ -5,10 +5,13 @@ import config from '../app/config';
 import AppError from '../app/errors/AppError';
 import { StatusCodes } from 'http-status-codes';
 import { User } from '../modules/users/user.model';
+// import { TUserRole } from '../modules/users/user.interface';
 
+// const auth = (...requiredRole: TUserRole[]) => {
 const auth = (...requiredRole: string[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(' ')[1];
+    // const token = req.headers.authorization;
 
     if (!token) {
       throw new AppError(StatusCodes.UNAUTHORIZED, 'You are not Authorized!');
@@ -38,6 +41,7 @@ const auth = (...requiredRole: string[]) => {
     }
 
     req.user = decoded as JwtPayload;
+    req.user = user;
     req.user._id = _id;
 
     next();

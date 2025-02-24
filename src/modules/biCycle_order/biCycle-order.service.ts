@@ -7,10 +7,12 @@ import { User } from '../users/user.model';
 import { TOrderBiCycle } from './biCycle-order.interface';
 import { OrderBiCycleModel } from './biCycle.-order.model';
 import mongoose from 'mongoose';
+// import { orderUtils } from './order.utils';
 
 const createOrderBiCycleService = async (
   data: TOrderBiCycle,
   userId: string,
+  // client_ip: string,
 ) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -62,6 +64,23 @@ const createOrderBiCycleService = async (
 
     await session.commitTransaction();
     session.endSession();
+
+    // payment method
+    // const shurjopayPayload = {
+    //   amount: data.totalPrice,
+    //   order_id: product._id,
+    //   currency: 'BDT',
+    //   customer_name: user.name,
+    //   customer_email: user.email,
+    //   customer_phone: 'N/A',
+    //   customer_address: 'N/A',
+    //   customer_city: 'N/A',
+    //   client_ip,
+    // };
+
+    // const payment = await orderUtils.makePayment(shurjopayPayload);
+
+    // return result[0], payment;
     return result[0];
   } catch (error) {
     await session.abortTransaction();
@@ -89,6 +108,35 @@ const getSingleBiCycleOrderFromDB = async (id: string, userId: string) => {
 
   return bicycleOrderId;
 };
+
+// ================================================demo===========================
+const getAllOrdersByUser = async (userId: string) => {
+  const userOrders = await OrderBiCycleModel.find({
+    customer: userId,
+  }).populate({ path: 'product', select: 'name' });
+
+  if (!userOrders || userOrders.length === 0) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'No orders found for this user');
+  }
+
+  return userOrders;
+};
+
+// const getBiCycleOrderbyuser = async (userId: string) => {
+//   try {
+//     const orders = await OrderBiCycleModel.find({ customer: userId });
+//     if (!userId) {
+//       throw new AppError(StatusCodes.UNAUTHORIZED, 'User not authenticated');
+//     }
+//     return orders;
+//   } catch (error) {
+//     throw new AppError(
+//       StatusCodes.INTERNAL_SERVER_ERROR,
+//       'Failed to fetch orders',
+//     );
+//   }
+// };
+// ==============================================demo================================
 
 const updateBiCycleOderIntoDB = async (
   id: string,
@@ -196,4 +244,5 @@ export const orderBiCycleService = {
   updateBiCycleOderIntoDB,
   deleteOrderFromDB,
   adminShippingOrder,
+  getAllOrdersByUser,
 };

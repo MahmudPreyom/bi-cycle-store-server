@@ -20,6 +20,15 @@ OrderBiCycleRouter.get(
   auth(USER_ROLE.user, USER_ROLE.admin),
   orderBiCycleController.getBiCycleOrderData,
 );
+// ===============================================demo=========================
+OrderBiCycleRouter.get(
+  // '/order/:userId',
+  '/order/my-orders',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  orderBiCycleController.getUserOrders,
+);
+// =======================================================demo==================
+
 OrderBiCycleRouter.patch(
   '/:orderId',
   auth(USER_ROLE.user),
