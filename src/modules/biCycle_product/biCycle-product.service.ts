@@ -1,3 +1,5 @@
+// import QueryBuilder from '../../app/builder/QueryBuilder';
+// import { BicycleSearchableFields } from './bicycle-product.const';
 import { TBiCycle } from './biCycle-product.interface';
 import BiCycle from './biCycle-product.model';
 
@@ -6,7 +8,24 @@ const createBiCycleProduct = async (data: TBiCycle): Promise<TBiCycle> => {
   return result;
 };
 
-const getBiCycle = async (searchTerm: string | undefined) => {
+// const getBiCycle = async (searchTerm: string | undefined) => {
+//   let query = {};
+
+//   if (searchTerm) {
+//     const regex = new RegExp(searchTerm, 'i');
+//     query = {
+//       $or: [{ name: regex }, { brand: regex }, { type: regex }],
+//     };
+//   }
+//   const result = await BiCycle.find(query);
+//   return result;
+// };
+// testing================================================================================================================
+const getBiCycle = async (
+  searchTerm: string | undefined,
+  sortBy: string | undefined,
+  sortOrder: string | undefined,
+) => {
   let query = {};
 
   if (searchTerm) {
@@ -15,9 +34,17 @@ const getBiCycle = async (searchTerm: string | undefined) => {
       $or: [{ name: regex }, { brand: regex }, { type: regex }],
     };
   }
-  const result = await BiCycle.find(query);
+
+  // Define sorting criteria (default: sort by price in ascending order)
+  const sortCriteria: Record<string, 1 | -1> = {};
+  if (sortBy === 'price' || sortBy === 'quantity') {
+    sortCriteria[sortBy] = sortOrder === 'desc' ? -1 : 1;
+  }
+
+  const result = await BiCycle.find(query).sort(sortCriteria);
   return result;
 };
+// =============================================================================================================================
 
 const getSingleBiCycle = async (id: string) => {
   const result = await BiCycle.findById(id);

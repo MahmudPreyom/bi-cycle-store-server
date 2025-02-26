@@ -21,12 +21,26 @@ const createOrderBiCycle = catchAsync(async (req, res) => {
   const result = await orderBiCycleService.createOrderBiCycleService(
     biCycleOrderData,
     customer,
+    req.ip!,
   );
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
     success: true,
     message: 'Order created successfully',
     data: result,
+  });
+});
+
+const verifyPayment = catchAsync(async (req, res) => {
+  const order = await orderBiCycleService.verifyPayment(
+    req.query.order_id as string,
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.CREATED,
+    message: 'Order verified successfully',
+    data: order,
   });
 });
 
@@ -150,4 +164,5 @@ export const orderBiCycleController = {
   adminShippingOrder,
   deleteOrder,
   getUserOrders,
+  verifyPayment,
 };

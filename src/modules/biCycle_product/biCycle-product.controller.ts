@@ -22,8 +22,10 @@ const createBiCycle = async (req: Request, res: Response) => {
 
 const getBiCycle = async (req: Request, res: Response) => {
   try {
-    const { searchTerm } = req.query;
-    const result = await biCycleProductService.getBiCycle(searchTerm as string);
+    const { searchTerm, sortBy, sortOrder} = req.query;
+    const result = await biCycleProductService.getBiCycle(searchTerm as string,
+      sortBy as string,
+      sortOrder as string);
     // console.log(searchTerm);
 
     res.send({

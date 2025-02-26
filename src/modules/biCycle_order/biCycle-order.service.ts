@@ -7,12 +7,13 @@ import { User } from '../users/user.model';
 import { TOrderBiCycle } from './biCycle-order.interface';
 import { OrderBiCycleModel } from './biCycle.-order.model';
 import mongoose from 'mongoose';
+import { orderUtils } from './order.utils';
 // import { orderUtils } from './order.utils';
 
 const createOrderBiCycleService = async (
   data: TOrderBiCycle,
   userId: string,
-  // client_ip: string,
+  client_ip: string,
 ) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -59,29 +60,43 @@ const createOrderBiCycleService = async (
 
     // Create order with customer information
     const orderData = { ...data, customer: user._id };
+    // console.log('o', orderData);
+
     const result = await OrderBiCycleModel.create([orderData], { session });
+    // console.log('r', result);
+
     await result[0].populate('customer', 'name email role');
 
     await session.commitTransaction();
     session.endSession();
 
     // payment method
-    // const shurjopayPayload = {
-    //   amount: data.totalPrice,
-    //   order_id: product._id,
-    //   currency: 'BDT',
-    //   customer_name: user.name,
-    //   customer_email: user.email,
-    //   customer_phone: 'N/A',
-    //   customer_address: 'N/A',
-    //   customer_city: 'N/A',
-    //   client_ip,
-    // };
+    const shurjopayPayload = {
+      amount: data.totalPrice,
+      order_id: result[0]._id,
+      currency: 'BDT',
+      customer_name: user.name,
+      customer_email: user.email,
+      customer_phone: 'N/A',
+      customer_address: 'N/A',
+      customer_city: 'N/A',
+      client_ip,
+    };
 
-    // const payment = await orderUtils.makePayment(shurjopayPayload);
+    const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
 
-    // return result[0], payment;
-    return result[0];
+    if (payment?.transactionStatus) {
+      result[0] = await result[0].updateOne({
+        transaction: {
+          id: payment?.sp_order_id,
+          transactionStatus: payment?.transactionStatus,
+        },
+      });
+    }
+
+    return payment.checkout_url;
+    // return { result, payment };
+    // return result[0];
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
@@ -91,6 +106,35 @@ const createOrderBiCycleService = async (
     );
   }
 };
+// ===================================test====================================
+const verifyPayment = async (order_id: string) => {
+  const verifiedPayment = await orderUtils.verifyPaymentAsync(order_id);
+  if (verifiedPayment.length) {
+    await OrderBiCycleModel.findOneAndUpdate(
+      {
+        'transaction.id': order_id,
+      },
+      {
+        'transaction.bank_status': verifiedPayment[0].bank_status,
+        'transaction.sp_code': verifiedPayment[0].sp_code,
+        'transaction.sp_message': verifiedPayment[0].sp_message,
+        'transaction.transaction_status': verifiedPayment[0].transaction_status,
+        'transaction.method': verifiedPayment[0].method,
+        'transaction.date_time': verifiedPayment[0].date_time,
+        status:
+          verifiedPayment[0].bank_status == 'Success'
+            ? 'Paid'
+            : verifiedPayment[0].bank_status == 'Failed'
+              ? 'Pending'
+              : verifiedPayment[0].bank_status == 'Cancel'
+                ? 'Cancelled'
+                : '',
+      },
+    );
+  }
+  return verifiedPayment;
+};
+// =====================================test======================================
 
 const getSingleBiCycleOrderFromDB = async (id: string, userId: string) => {
   const bicycleOrderId = await OrderBiCycleModel.findById(id);
@@ -190,12 +234,12 @@ const adminShippingOrder = async (id: string) => {
   }
 
   // Check if the user is already blocked
-  if (orderBiCycle.status === 'Shipping') {
+  if (orderBiCycle.status === 'Shipped') {
     throw new Error('Order is already Shipping ! ');
   }
   const result = await OrderBiCycleModel.findByIdAndUpdate(
     id,
-    { status: 'Shipping' },
+    { status: 'Shipped' },
     {
       new: true,
       runValidators: true,
@@ -245,4 +289,5 @@ export const orderBiCycleService = {
   deleteOrderFromDB,
   adminShippingOrder,
   getAllOrdersByUser,
+  verifyPayment,
 };

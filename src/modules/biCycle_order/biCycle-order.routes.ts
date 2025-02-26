@@ -11,6 +11,11 @@ OrderBiCycleRouter.post(
   orderBiCycleController.createOrderBiCycle,
 );
 OrderBiCycleRouter.get(
+  '/verify',
+  auth(USER_ROLE.user),
+  orderBiCycleController.verifyPayment,
+);
+OrderBiCycleRouter.get(
   '/revenue',
   auth(USER_ROLE.admin),
   orderBiCycleController.getBiCycleOrderController,

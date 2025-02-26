@@ -1,24 +1,57 @@
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-// import Shurjopay from 'shurjopay';
-// import config from '../../app/config';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Shurjopay, { PaymentResponse, VerificationResponse } from 'shurjopay';
+import config from '../../app/config';
+// import sendResponse from '../../utils/sendResponse';
+// import { StatusCodes } from 'http-status-codes';
 
-// const shurjopay = new Shurjopay();
+const shurjopay = new Shurjopay();
 
-// shurjopay.config(
-//   config.sp_endpoint!,
-//   config.sp_username!,
-//   config.sp_password!,
-//   config.sp_prefix!,
-//   config.sp_return_url!,
-// );
+shurjopay.config(
+  config.sp_endpoint!,
+  config.sp_username!,
+  config.sp_password!,
+  config.sp_prefix!,
+  config.sp_return_url!,
+);
 
-// const makePayment = async (paymentPayload: any) => {
-//   const paymentResult = await shurjopay.makePayment(paymentPayload, (response) => console.log(response), (error) => console.log(error);
-  
-//   );
-//   return paymentResult;
-// };
+const makePaymentAsync = async (
+  paymentPayload: any,
+): Promise<PaymentResponse> => {
+  return new Promise((resolve, reject) => {
+    shurjopay.makePayment(
+      paymentPayload,
+      (response) => resolve(response),
+      (error) => reject(error),
+    );
+  });
+  // const paymentResult = await shurjopay.makePayment(
+  //   paymentPayload,
+  //   (response) => {
+  //     sendResponse(res, {
+  //       statusCode: StatusCodes.CREATED,
+  //       success: true,
+  //       message: 'Order created successfully',
+  //       data: response,
+  //     });
+  //   },
+  //   (error) => console.log(error),
+  // );
+  // return paymentResult;
+};
 
-// export const orderUtils = {
-//   makePayment,
-// };
+const verifyPaymentAsync = (
+  order_id: string,
+): Promise<VerificationResponse[]> => {
+  return new Promise((resolve, reject) => {
+    shurjopay.verifyPayment(
+      order_id,
+      (response) => resolve(response),
+      (error) => reject(error),
+    );
+  });
+};
+
+export const orderUtils = {
+  makePaymentAsync,
+  verifyPaymentAsync,
+};
