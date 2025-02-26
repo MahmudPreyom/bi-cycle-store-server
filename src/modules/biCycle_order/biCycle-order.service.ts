@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { StatusCodes } from 'http-status-codes';
@@ -182,6 +183,21 @@ const getAllOrdersByUser = async (userId: string) => {
 // };
 // ==============================================demo================================
 
+// =================================================adminorderget================================================================
+const getAllOrdersByAdmin = async () => {
+  // let query = {};
+
+  // if (searchTerm) {
+  //   const regex = new RegExp(searchTerm, 'i');
+  //   query = {
+  //     $or: [{ name: regex }, { brand: regex }, { category: regex }],
+  //   };
+  // }
+  const result = await OrderBiCycleModel.find();
+  return result;
+};
+// =================================================adminorderget================================================================
+
 const updateBiCycleOderIntoDB = async (
   id: string,
   userId: string,
@@ -290,4 +306,5 @@ export const orderBiCycleService = {
   adminShippingOrder,
   getAllOrdersByUser,
   verifyPayment,
+  getAllOrdersByAdmin,
 };

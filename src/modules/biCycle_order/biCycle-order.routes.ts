@@ -34,6 +34,15 @@ OrderBiCycleRouter.get(
 );
 // =======================================================demo==================
 
+// =====================================getadminallorder=====================================
+OrderBiCycleRouter.get(
+  '/order/get-all-orders',
+  auth(USER_ROLE.admin),
+  orderBiCycleController.getAllOrdersByAdmin,
+);
+
+// =====================================getadminallorder=====================================
+
 OrderBiCycleRouter.patch(
   '/:orderId',
   auth(USER_ROLE.user),

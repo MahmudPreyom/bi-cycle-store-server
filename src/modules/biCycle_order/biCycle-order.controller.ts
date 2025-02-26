@@ -156,6 +156,21 @@ const getUserOrders = catchAsync(async (req: Request, res: Response) => {
 
 // ==========================================================demo===============================================
 
+// =====================================================getallordersbyAdmin==================================================
+const getAllOrdersByAdmin = catchAsync(async (req, res) => {
+  // const { searchTerm } = req.query;
+  const result = await orderBiCycleService.getAllOrdersByAdmin();
+  // console.log(result);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Order Retrieved successfully',
+    data: result,
+  });
+});
+// =====================================================getallordersbyAdmin==================================================
+
 export const orderBiCycleController = {
   createOrderBiCycle,
   getBiCycleOrderController,
@@ -165,4 +180,5 @@ export const orderBiCycleController = {
   deleteOrder,
   getUserOrders,
   verifyPayment,
+  getAllOrdersByAdmin,
 };
