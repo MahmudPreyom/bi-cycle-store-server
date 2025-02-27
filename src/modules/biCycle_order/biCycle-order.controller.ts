@@ -89,18 +89,36 @@ const deleteOrder = catchAsync(async (req, res) => {
   });
 });
 
-const adminShippingOrder = catchAsync(async (req, res) => {
-  const { id } = req.params;
+// const adminDeletedOrder = catchAsync(async (req, res) => {
+//   const { orderId } = req.params;
 
-  const result = await orderBiCycleService.adminShippingOrder(id);
+//   const result = await orderBiCycleService.adminDeletedOrder(orderId);
 
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: 'Order Shipping successfully',
-    data: result,
-  });
-});
+//   sendResponse(res, {
+//     statusCode: StatusCodes.OK,
+//     success: true,
+//     message: 'Order deleted successfully',
+//     data: result,
+//   });
+// });
+
+const adminShippingOrder = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const result = await orderBiCycleService.adminShippingOrder(id);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: 'Order shipped successfully',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: 'Order update failed',
+    });
+  }
+};
 
 const getBiCycleOrderController = async (req: Request, res: Response) => {
   try {
@@ -178,6 +196,7 @@ export const orderBiCycleController = {
   updateBiCycleOrder,
   adminShippingOrder,
   deleteOrder,
+  // adminDeletedOrder,
   getUserOrders,
   verifyPayment,
   getAllOrdersByAdmin,

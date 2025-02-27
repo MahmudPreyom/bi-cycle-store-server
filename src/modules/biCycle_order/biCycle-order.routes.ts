@@ -43,6 +43,16 @@ OrderBiCycleRouter.get(
 
 // =====================================getadminallorder=====================================
 
+// ========================================admin order delete==========================================
+
+// OrderBiCycleRouter.get(
+//   '/order/:orderId',
+//   auth(USER_ROLE.admin),
+//   orderBiCycleController.adminDeletedOrder,
+// );
+
+// ========================================admin order delete==========================================
+
 OrderBiCycleRouter.patch(
   '/:orderId',
   auth(USER_ROLE.user),

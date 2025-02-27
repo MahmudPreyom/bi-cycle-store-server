@@ -240,26 +240,47 @@ const deleteOrderFromDB = async (id: string, userId: string) => {
   return result;
 };
 
+// const adminDeletedOrder = async (id: string) => {
+//   const order = await OrderBiCycleModel.findById(id);
+
+//   if (!order) {
+//     throw new AppError(StatusCodes.NOT_FOUND, 'Order not found');
+//   }
+
+//   const result = await OrderBiCycleModel.findByIdAndDelete(id);
+
+//   if (!result) {
+//     throw new AppError(
+//       StatusCodes.INTERNAL_SERVER_ERROR,
+//       'Failed to delete order',
+//     );
+//   }
+
+//   return result;
+// };
+
 const adminShippingOrder = async (id: string) => {
-  // Find the user id
   const orderBiCycle = await OrderBiCycleModel.findById(id);
-  // Check if the user exists
+
   if (!orderBiCycle) {
-    throw new Error('Order  not found');
+    throw new Error('Order not found');
   }
 
-  // Check if the user is already blocked
   if (orderBiCycle.status === 'Shipped') {
-    throw new Error('Order is already Shipping ! ');
+    throw new Error('Order is already shipped!');
   }
+
+  // Ensure the updated order is returned
   const result = await OrderBiCycleModel.findByIdAndUpdate(
     id,
     { status: 'Shipped' },
-    {
-      new: true,
-      runValidators: true,
-    },
+    { new: true, runValidators: true },
   );
+
+  if (!result) {
+    throw new Error('Failed to update order status');
+  }
+
   return result;
 };
 
@@ -302,6 +323,7 @@ export const orderBiCycleService = {
   getSingleBiCycleOrderFromDB,
   updateBiCycleOderIntoDB,
   deleteOrderFromDB,
+  // adminDeletedOrder,
   adminShippingOrder,
   getAllOrdersByUser,
   verifyPayment,
