@@ -240,24 +240,24 @@ const deleteOrderFromDB = async (id: string, userId: string) => {
   return result;
 };
 
-// const adminDeletedOrder = async (id: string) => {
-//   const order = await OrderBiCycleModel.findById(id);
+const adminDeletedOrder = async (id: string) => {
+  const order = await OrderBiCycleModel.findById(id);
 
-//   if (!order) {
-//     throw new AppError(StatusCodes.NOT_FOUND, 'Order not found');
-//   }
+  if (!order) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Order not found');
+  }
 
-//   const result = await OrderBiCycleModel.findByIdAndDelete(id);
+  const result = await OrderBiCycleModel.findByIdAndDelete(id);
 
-//   if (!result) {
-//     throw new AppError(
-//       StatusCodes.INTERNAL_SERVER_ERROR,
-//       'Failed to delete order',
-//     );
-//   }
+  if (!result) {
+    throw new AppError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      'Failed to delete order',
+    );
+  }
 
-//   return result;
-// };
+  return result;
+};
 
 const adminShippingOrder = async (id: string) => {
   const orderBiCycle = await OrderBiCycleModel.findById(id);
@@ -323,7 +323,7 @@ export const orderBiCycleService = {
   getSingleBiCycleOrderFromDB,
   updateBiCycleOderIntoDB,
   deleteOrderFromDB,
-  // adminDeletedOrder,
+  adminDeletedOrder,
   adminShippingOrder,
   getAllOrdersByUser,
   verifyPayment,

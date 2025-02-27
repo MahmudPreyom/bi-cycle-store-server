@@ -45,11 +45,11 @@ OrderBiCycleRouter.get(
 
 // ========================================admin order delete==========================================
 
-// OrderBiCycleRouter.get(
-//   '/order/:orderId',
-//   auth(USER_ROLE.admin),
-//   orderBiCycleController.adminDeletedOrder,
-// );
+OrderBiCycleRouter.delete(
+  '/order/:orderId',
+  auth(USER_ROLE.admin),
+  orderBiCycleController.adminDeletedOrder,
+);
 
 // ========================================admin order delete==========================================
 
